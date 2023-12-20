@@ -4,6 +4,15 @@ FROM node:14
 # Set the working directory to /app
 WORKDIR /app
 
+# Create a non-root user
+RUN addgroup --system appgroup && adduser --system --ingroup appgroup appuser
+
+# Change ownership of the working directory to the non-root user
+RUN chown -R appuser:appgroup /app
+
+# Switch to the non-root user
+USER appuser
+
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
